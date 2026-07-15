@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📖 Nhật Ký</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+    <!-- CKEditor 5 CDN -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Background Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <!-- Onboarding Banner -->
+    <div id="onboarding-banner" class="onboarding-banner hidden">
+        <div class="banner-content">
+            <h2>👋 Chào mừng đến với Nhật Ký!</h2>
+            <p>Ghi lại khoảnh khắc, theo dõi tâm trạng, và xây dựng thói quen viết mỗi ngày.</p>
+            <button onclick="closeOnboarding()" class="btn btn-primary">Bắt đầu viết</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>📖 Nhật Ký</h1>
+                    <div id="streak-badge" class="streak-badge hidden">
+                        🔥 <span id="streak-count">0</span> ngày
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button onclick="toggleDarkMode()" class="btn-icon" title="Chuyển chế độ sáng/tối">
+                        <span id="theme-icon">🌙</span>
+                    </button>
+                    <button onclick="showSettings()" class="btn-icon" title="Cài đặt">⚙️</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="editor" onclick="switchTab('editor')">✍️ Viết</button>
+            <button class="tab-btn" data-tab="entries" onclick="switchTab('entries')">📚 Nhật ký</button>
+            <button class="tab-btn" data-tab="stats" onclick="switchTab('stats')">📊 Thống kê</button>
+            <button class="tab-btn" data-tab="trash" onclick="switchTab('trash')">🗑️ Thùng rác</button>
+        </nav>
+
+        <!-- Editor Tab -->
+        <div id="editor-tab" class="tab-content active">
+            <div class="editor-section card">
+                <div class="editor-header">
+                    <input type="text" id="entry-title" class="entry-title" placeholder="Tiêu đề bài viết...">
+                    <div class="editor-actions">
+                        <button onclick="toggleFocusMode()" class="btn btn-secondary" title="Chế độ tập trung">
+                            <span id="focus-icon">🎯</span> Focus
+                        </button>
+                        <button onclick="saveEntry()" class="btn btn-primary">💾 Lưu</button>
+                        <button onclick="cancelEdit()" class="btn btn-secondary hidden" id="cancel-edit-btn">❌ Hủy</button>
+                    </div>
+                </div>
+                
+                <!-- Mood Selector -->
+                <div class="mood-selector">
+                    <label>Tâm trạng hôm nay:</label>
+                    <div class="mood-options">
+                        <button class="mood-btn" data-mood="5" title="Tuyệt vời">😄</button>
+                        <button class="mood-btn" data-mood="4" title="Tốt">🙂</button>
+                        <button class="mood-btn" data-mood="3" title="Bình thường">😐</button>
+                        <button class="mood-btn" data-mood="2" title="Tệ">😟</button>
+                        <button class="mood-btn" data-mood="1" title="Tệ hại">😢</button>
+                    </div>
+                </div>
+
+                <!-- Editor -->
+                <div id="editor-container"></div>
+
+                <!-- Word Count -->
+                <div class="word-count">
+                    <span id="word-count">0 từ</span> • <span id="char-count">0 ký tự</span>
+                </div>
+
+                <!-- Tags Section -->
+                <div class="tags-section">
+                    <h3>🏷️ Gắn thẻ</h3>
+                    <div class="tag-groups">
+                        <div class="tag-group">
+                            <h4>🎭 Tâm trạng</h4>
+                            <div class="tags">
+                                <button class="tag-btn" data-tag="vui-vẻ">Vui vẻ</button>
+                                <button class="tag-btn" data-tag="bình-thường">Bình thường</button>
+                                <button class="tag-btn" data-tag="buồn">Buồn</button>
+                                <button class="tag-btn" data-tag="lo-lắng">Lo lắng</button>
+                                <button class="tag-btn" data-tag="căng-thẳng">Căng thẳng</button>
+                                <button class="tag-btn" data-tag="mệt-mỏi">Mệt mỏi</button>
+                                <button class="tag-btn" data-tag="tức-giận">Tức giận</button>
+                            </div>
+                        </div>
+                        <div class="tag-group">
+                            <h4>📚 Học tập</h4>
+                            <div class="tags">
+                                <button class="tag-btn" data-tag="học-bài">Học bài</button>
+                                <button class="tag-btn" data-tag="đi-làm">Đi làm</button>
+                                <button class="tag-btn" data-tag="làm-dự-án">Làm dự án</button>
+                                <button class="tag-btn" data-tag="đọc-sách">Đọc sách</button>
+                                <button class="tag-btn" data-tag="tự-học">Tự học</button>
+                            </div>
+                        </div>
+                        <div class="tag-group">
+                            <h4>🏃 Sức khỏe</h4>
+                            <div class="tags">
+                                <button class="tag-btn" data-tag="tập-thể-dục">Tập thể dục</button>
+                                <button class="tag-btn" data-tag="ăn-uống">Ăn uống</button>
+                                <button class="tag-btn" data-tag="uống-nước">Uống nước</button>
+                                <button class="tag-btn" data-tag="ngủ-ngon">Ngủ ngon</button>
+                                <button class="tag-btn" data-tag="ngủ-kém">Ngủ kém</button>
+                                <button class="tag-btn" data-tag="đi-bộ">Đi bộ</button>
+                            </div>
+                        </div>
+                        <div class="tag-group">
+                            <h4>🎮 Sở thích</h4>
+                            <div class="tags">
+                                <button class="tag-btn" data-tag="phim-ảnh">Phim ảnh</button>
+                                <button class="tag-btn" data-tag="chơi-game">Chơi game</button>
+                                <button class="tag-btn" data-tag="âm-nhạc">Âm nhạc</button>
+                                <button class="tag-btn" data-tag="viết-lách">Viết lách</button>
+                                <button class="tag-btn" data-tag="cà-phê">Cà phê</button>
+                            </div>
+                        </div>
+                        <div class="tag-group">
+                            <h4>🏠 Sinh hoạt</h4>
+                            <div class="tags">
+                                <button class="tag-btn" data-tag="dọn-dẹp">Dọn dẹp</button>
+                                <button class="tag-btn" data-tag="nấu-ăn">Nấu ăn</button>
+                                <button class="tag-btn" data-tag="mua-sắm">Mua sắm</button>
+                                <button class="tag-btn" data-tag="giặt-giũ">Giặt giũ</button>
+                                <button class="tag-btn" data-tag="ở-nhà">Ở nhà</button>
+                            </div>
+                        </div>
+                        <div class="tag-group">
+                            <h4>👥 Xã hội</h4>
+                            <div class="tags">
+                                <button class="tag-btn" data-tag="gia-đình">Gia đình</button>
+                                <button class="tag-btn" data-tag="bạn-bè">Bạn bè</button>
+                                <button class="tag-btn" data-tag="hẹn-hò">Hẹn hò</button>
+                                <button class="tag-btn" data-tag="tiệc-tùng">Tiệc tùng</button>
+                                <button class="tag-btn" data-tag="gọi-điện">Gọi điện</button>
+                            </div>
+                        </div>
+                        <div class="tag-group">
+                            <h4>🌤 Thời tiết</h4>
+                            <div class="tags">
+                                <button class="tag-btn" data-tag="nắng">Nắng</button>
+                                <button class="tag-btn" data-tag="mưa">Mưa</button>
+                                <button class="tag-btn" data-tag="mây">Mây</button>
+                                <button class="tag-btn" data-tag="nóng">Nóng</button>
+                                <button class="tag-btn" data-tag="gió">Gió</button>
+                            </div>
+                        </div>
+                        <div class="tag-group">
+                            <h4>💰 Tài chính</h4>
+                            <div class="tags">
+                                <button class="tag-btn" data-tag="tiết-kiệm">Tiết kiệm</button>
+                                <button class="tag-btn" data-tag="mua-sắm-lớn">Mua sắm lớn</button>
+                                <button class="tag-btn" data-tag="ăn-ngoài">Ăn ngoài</button>
+                                <button class="tag-btn" data-tag="thu-nhập">Thu nhập</button>
+                            </div>
+                        </div>
+                        <div class="tag-group">
+                            <h4>✈️ Đặc biệt</h4>
+                            <div class="tags">
+                                <button class="tag-btn" data-tag="du-lịch">Du lịch</button>
+                                <button class="tag-btn" data-tag="chụp-ảnh">Chụp ảnh</button>
+                                <button class="tag-btn" data-tag="khám-phá">Khám phá</button>
+                                <button class="tag-btn" data-tag="sáng-tạo">Sáng tạo</button>
+                                <button class="tag-btn" data-tag="lễ-hội">Lễ hội</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Dates -->
+            <div class="important-dates card">
+                <h3>📅 Ngày quan trọng</h3>
+                <div class="date-input-group">
+                    <input type="text" id="event-name" placeholder="Tên sự kiện...">
+                    <input type="date" id="event-date">
+                    <select id="event-icon">
+                        <option value="🎉">🎉 Sinh nhật</option>
+                        <option value="❤️">❤️ Kỷ niệm</option>
+                        <option value="🎓">🎓 Thi cử</option>
+                        <option value="✈️">✈️ Du lịch</option>
+                        <option value="🎯">🎯 Mục tiêu</option>
+                        <option value="💼">💼 Công việc</option>
+                        <option value="🏥">🏥 Sức khỏe</option>
+                        <option value="📝">📝 Khác</option>
+                    </select>
+                    <button onclick="addImportantDate()" class="btn btn-primary">Thêm</button>
+                </div>
+                <div id="important-dates-list" class="dates-list"></div>
+            </div>
+        </div>
+
+        <!-- Entries Tab -->
+        <div id="entries-tab" class="tab-content">
+            <div class="entries-section">
+                <div class="entries-header card">
+                    <input type="text" id="search-input" class="search-input" placeholder="🔍 Tìm kiếm theo tiêu đề, nội dung, hoặc tag...">
+                </div>
+                <div id="entries-list" class="entries-list"></div>
+            </div>
+        </div>
+
+        <!-- Stats Tab -->
+        <div id="stats-tab" class="tab-content">
+            <div class="stats-section">
+                <div class="card">
+                    <h3>😊 Biểu đồ tâm trạng tháng này</h3>
+                    <canvas id="mood-chart"></canvas>
+                </div>
+                <div class="card">
+                    <h3>🏷️ Tag phổ biến nhất</h3>
+                    <div id="popular-tags" class="popular-tags"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trash Tab -->
+        <div id="trash-tab" class="tab-content">
+            <div class="trash-section">
+                <div class="trash-header card">
+                    <h3>🗑️ Thùng rác</h3>
+                    <button onclick="emptyTrash()" class="btn btn-danger">Xóa tất cả</button>
+                </div>
+                <div id="trash-list" class="entries-list"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2>⚙️ Cài đặt</h2>
+                <button onclick="closeSettings()" class="btn-close">✕</button>
+            </div>
+            <div class="modal-body">
+                <!-- Notifications Settings -->
+                <section class="settings-section">
+                    <h3>⏰ Nhắc nhở</h3>
+                    <div class="notification-settings">
+                        <div class="notification-item">
+                            <label>
+                                <input type="checkbox" id="notify-water" onchange="updateNotificationSettings()">
+                                Uống nước
+                            </label>
+                            <input type="time" id="notify-water-time" value="09:00" onchange="updateNotificationSettings()">
+                        </div>
+                        <div class="notification-item">
+                            <label>
+                                <input type="checkbox" id="notify-exercise" onchange="updateNotificationSettings()">
+                                Vận động
+                            </label>
+                            <input type="time" id="notify-exercise-time" value="17:00" onchange="updateNotificationSettings()">
+                        </div>
+                        <div class="notification-item">
+                            <label>
+                                <input type="checkbox" id="notify-diary" onchange="updateNotificationSettings()">
+                                Viết nhật ký
+                            </label>
+                            <input type="time" id="notify-diary-time" value="21:00" onchange="updateNotificationSettings()">
+                        </div>
+                        <div class="notification-item">
+                            <label>
+                                <input type="checkbox" id="notify-rest" onchange="updateNotificationSettings()">
+                                Nghỉ ngơi
+                            </label>
+                            <input type="time" id="notify-rest-time" value="23:00" onchange="updateNotificationSettings()">
+                        </div>
+                    </div>
+                    <button onclick="requestNotificationPermission()" class="btn btn-primary">Cho phép thông báo</button>
+                </section>
+
+                <!-- Data Management -->
+                <section class="settings-section">
+                    <h3>💾 Quản lý dữ liệu</h3>
+                    <div class="data-actions">
+                        <button onclick="exportData()" class="btn btn-secondary">📤 Xuất dữ liệu</button>
+                        <button onclick="importData()" class="btn btn-secondary">📥 Nhập dữ liệu</button>
+                        <button onclick="clearAllData()" class="btn btn-danger">🗑️ Xóa tất cả</button>
+                    </div>
+                </section>
+
+                <!-- About -->
+                <section class="settings-section">
+                    <h3>ℹ️ Về ứng dụng</h3>
+                    <p>Nhật Ký v1.0 - Ứng dụng ghi chú cá nhân với theo dõi tâm trạng và thói quen.</p>
+                    <p>Dữ liệu được lưu trữ hoàn toàn trên máy của bạn.</p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <span id="toast-message"></span>
+        <button id="toast-action" class="toast-action hidden">Hoàn tác</button>
+    </div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="import-file-input" accept=".json" style="display: none;">
+
+    <script src="script.js"></script>
+</body>
+</html>
