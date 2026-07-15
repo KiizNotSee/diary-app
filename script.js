@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ======== Event Listeners ========
     tabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
-    moodBtns.forEach(btn => btn.addEventListener('click', () => selectMood(btn.dataset.mood)));
+    moodBtns.forEach(btn => btn.addEventListener('click', (e) => selectMood(e.currentTarget.dataset.mood))); // Use currentTarget
     searchInput.addEventListener('input', () => renderEntries(state.entries, entriesList, { filter: searchInput.value }));
     importFileInput.addEventListener('change', handleFileImport);
     
@@ -213,8 +213,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.body.addEventListener('click', (e) => {
-        if (e.target.closest('.entry-card') && !e.target.closest('.btn')) {
-            const entryId = e.target.closest('.entry-card').dataset.id;
+        const card = e.target.closest('.entry-card');
+        const clickedButton = e.target.closest('.btn'); // Check if the click was on a button
+        
+        // Only trigger editEntry if the click was on the card itself, not its buttons
+        if (card && !clickedButton) {
+            const entryId = card.dataset.id;
             editEntry(entryId);
         }
     });

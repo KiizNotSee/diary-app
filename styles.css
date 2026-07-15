@@ -303,11 +303,13 @@ h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; font-weight: 800; color: var
 
 /* ====== WORD COUNT ====== */
 .word-count {
-    text-align: right; font-size: 0.85rem; color: var(--text-secondary);
-    margin-bottom: 16px; padding: 8px 16px; border-radius: 16px;
-    background: var(--bg-primary); box-shadow: var(--shadow-pressed);
-    display: inline-block; float: right; font-weight: 600;
+    display: flex; justify-content: flex-end; gap: 15px;
+    font-size: 0.85rem; color: var(--text-secondary);
+    margin: 12px 0; padding: 10px 20px; border-radius: 20px;
+    background: rgba(255,255,255,0.5); box-shadow: var(--shadow-pressed);
+    font-weight: 600; width: fit-content; margin-left: auto;
 }
+[data-theme="dark"] .word-count { background: rgba(30,41,59,0.6); color: #94a3b8; }
 
 /* ====== METADATA ====== */
 .metadata-section { margin: 20px 0; }
