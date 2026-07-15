@@ -105,10 +105,12 @@ h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; font-weight: 800; color: var
 [data-theme="dark"] .template-selector select { background: rgba(30,41,59,0.6); color: #f8fafc; }
 
 /* MEDIA SECTION */
-.media-section { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-.media-section input[type="file"] { padding: 10px 18px; border: none; border-radius: 20px; font-size: 0.85rem; background: rgba(255,255,255,0.9); color: var(--text-primary); cursor: pointer; box-shadow: var(--shadow-button); }
-[data-theme="dark"] .media-section input[type="file"] { background: rgba(30,41,59,0.8); color: #f8fafc; }
-.media-section input[type="text"] { flex: 1; min-width: 150px; padding: 10px 18px; border: none; border-radius: 20px; font-size: 0.9rem; background: var(--bg-primary); color: var(--text-primary); box-shadow: var(--shadow-pressed); }
+.media-section { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.media-section .btn.btn-secondary {
+    padding: 12px 24px; border-radius: 20px; text-align: center;
+    font-size: 0.95rem; font-weight: 700;
+}
+.media-section input[type="text"] { flex: 1; min-width: 150px; padding: 12px 18px; border: none; border-radius: 20px; font-size: 0.9rem; background: var(--bg-primary); color: var(--text-primary); box-shadow: var(--shadow-pressed); }
 [data-theme="dark"] .media-section input[type="text"] { background: rgba(30,41,59,0.6); color: #f8fafc; }
 
 /* EDITOR */

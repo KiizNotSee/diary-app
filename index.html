@@ -100,8 +100,11 @@
                     </select>
                 </div>
                 <div id="editor-container"></div>
-                <div class="media-section" style="margin-top: 12px; display: flex; gap: 10px;">
-                    <input type="file" id="image-upload" accept="image/*" class="btn btn-secondary">
+                <div class="media-section" style="margin-top: 12px; display: flex; flex-direction: column; gap: 10px;">
+                    <label class="btn btn-secondary" for="image-upload" style="cursor: pointer; width: 100%; text-align: center;">
+                        📷 Chọn ảnh từ thiết bị
+                    </label>
+                    <input type="file" id="image-upload" accept="image/*" style="display: none;">
                     <input type="text" id="song-url" placeholder="Link bài hát (YouTube/Spotify)..." class="search-input">
                 </div>
 
