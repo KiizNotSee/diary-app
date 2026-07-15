@@ -244,9 +244,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.switchTab = (tabName) => {
         tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tabName));
         tabContents.forEach(c => c.classList.toggle('active', c.id === `${tabName}-tab`));
-        if (tabName === 'entries') renderEntries(state.entries, entriesList);
-        if (tabName === 'trash') renderEntries(state.trash, trashList, { isTrash: true });
-        if (tabName === 'stats') renderStats();
+        
+        // Only render the appropriate content based on which tab is selected
+        if (tabName === 'entries') {
+            renderEntries(state.entries, entriesList);
+        } else if (tabName === 'trash') {
+            renderEntries(state.trash, trashList, { isTrash: true });
+        } else if (tabName === 'stats') {
+            renderStats();
+        }
     };
 
     const updateWordCount = () => {
