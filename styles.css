@@ -283,26 +283,48 @@ h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; font-weight: 800; color: var
     display: inline-block; float: right; font-weight: 600;
 }
 
+/* ====== METADATA ====== */
+.metadata-section { margin: 20px 0; }
+.metadata-section input {
+    width: 100%; padding: 12px 16px; border: none; border-radius: 16px;
+    background: var(--bg-primary); color: var(--text-primary);
+    box-shadow: var(--shadow-pressed); font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.9rem;
+}
+[data-theme="dark"] .metadata-section input { background: rgba(30,41,59,0.6); color: #f8fafc; }
+.entry-metadata { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.entry-meta-item {
+    padding: 4px 12px; border-radius: 12px; font-size: 0.8rem;
+    background: rgba(255,255,255,0.9); box-shadow: 2px 2px 4px rgba(139,92,246,0.08), -2px -2px 4px rgba(255,255,255,0.9);
+    font-weight: 600; display: inline-block;
+}
+[data-theme="dark"] .entry-meta-item { background: rgba(30,41,59,0.8); }
+
+/* ====== TAG SEARCH ====== */
+#tag-search { margin-bottom: 12px; }
+
 /* ====== TAGS ====== */
 .tags-section { clear: both; margin-top: 24px; }
 .tags-section h3 { margin-bottom: 16px; font-size: 1.25rem; color: var(--text-primary); }
 .tag-groups { display: flex; flex-wrap: wrap; gap: 12px; }
 .tag-group {
-    background: rgba(255,255,255,0.15); padding: 16px; border-radius: 24px;
+    background: rgba(255,255,255,0.12); padding: 16px; border-radius: 24px;
     flex: 1 1 180px; border: 1px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
 }
-[data-theme="dark"] .tag-group { background: rgba(30,41,59,0.5); border-color: rgba(255,255,255,0.05); }
+[data-theme="dark"] .tag-group { background: rgba(30,41,59,0.4); border-color: rgba(255,255,255,0.05); }
 .tag-group h4 { font-size: 0.85rem; margin-bottom: 10px; color: var(--text-secondary); font-weight: 700; text-transform: uppercase; }
-.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag-btn {
-    padding: 8px 16px; border: none; border-radius: 16px; font-size: 0.9rem; cursor: pointer;
+    padding: 6px 14px; border: none; border-radius: 14px; font-size: 0.85rem; cursor: pointer;
     background: rgba(255,255,255,0.9); color: var(--text-primary);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 4px 4px 8px rgba(139,92,246,0.1), -4px -4px 8px rgba(255,255,255,0.9); font-weight: 600;
+    box-shadow: 3px 3px 6px rgba(139,92,246,0.08), -3px -3px 6px rgba(255,255,255,0.9); font-weight: 600;
 }
 [data-theme="dark"] .tag-btn { background: rgba(30,41,59,0.8); color: #cbd5e1; box-shadow: 2px 2px 4px rgba(0,0,0,0.3), -2px -2px 4px rgba(255,255,255,0.03); }
-.tag-btn:hover { transform: translateY(-2px); box-shadow: 6px 6px 12px rgba(139,92,246,0.15), -6px -6px 12px rgba(255,255,255,0.95); }
+.tag-btn:hover { transform: translateY(-2px); box-shadow: 6px 6px 12px rgba(139,92,246,0.12), -6px -6px 12px rgba(255,255,255,0.95); }
 .tag-btn.active { box-shadow: var(--shadow-pressed); background: linear-gradient(135deg, var(--accent), var(--accent-alt)); color: white; transform: translateY(0) scale(0.95); }
+.tag-btn-more { background: transparent !important; box-shadow: none !important; color: var(--text-secondary) !important; }
+.tag-btn-more:hover { color: var(--accent) !important; }
 
 /* ====== ENTRY IMAGE ====== */
 .entry-image { margin: -24px -24px 16px -24px; overflow: hidden; border-radius: 32px 32px 0 0; }
@@ -441,10 +463,11 @@ h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; font-weight: 800; color: var
     .mood-selector { flex-direction: column; align-items: flex-start; }
     .mood-selector label { font-size: 0.9rem; }
     .mood-btn { width: 48px; height: 48px; font-size: 1.6rem; }
+    .metadata-section { grid-template-columns: 1fr 1fr !important; }
     .tags-section h3 { font-size: 1.1rem; }
     .tag-group { padding: 12px; border-radius: 20px; flex: 1 1 150px; }
     .tag-group h4 { font-size: 0.8rem; }
-    .tag-btn { padding: 7px 14px; font-size: 0.8rem; }
+    .tag-btn { padding: 6px 12px; font-size: 0.8rem; }
     .date-input-group { flex-direction: column; gap: 12px; }
     .date-input-group input, .date-input-group select { width: 100%; padding: 12px 16px; font-size: 0.9rem; }
     .date-item { padding: 12px 16px; border-radius: 18px; }
@@ -472,6 +495,7 @@ h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; font-weight: 800; color: var
     .btn { padding: 10px 18px; font-size: 0.9rem; }
     .btn-icon { width: 44px; height: 44px; font-size: 1.2rem; }
     .mood-btn { width: 40px; height: 40px; font-size: 1.4rem; }
+    .metadata-section { grid-template-columns: 1fr !important; }
     .tag-group { flex: 1 1 100%; padding: 10px; }
     .tag-btn { padding: 6px 12px; font-size: 0.7rem; }
     .banner-content { padding: 30px; }

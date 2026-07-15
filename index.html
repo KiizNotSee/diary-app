@@ -110,103 +110,22 @@
                     <span id="word-count">0 từ</span> • <span id="char-count">0 ký tự</span>
                 </div>
 
+                <!-- Metadata Section -->
+                <div class="metadata-section" style="margin: 20px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px;">
+                    <input type="number" id="entry-rating" min="1" max="5" placeholder="⭐ Rating (1-5)" class="search-input">
+                    <input type="text" id="entry-location" placeholder="📍 Địa điểm" class="search-input">
+                    <input type="text" id="entry-drink" placeholder="☕ Đồ uống" class="search-input">
+                    <input type="text" id="entry-weather" placeholder="🌤️ Thời tiết" class="search-input">
+                </div>
+
                 <!-- Tags Section -->
                 <div class="tags-section">
                     <h3>🏷️ Gắn thẻ</h3>
-                    <div class="tag-groups">
-                        <div class="tag-group">
-                            <h4>🎭 Tâm trạng</h4>
-                            <div class="tags">
-                                <button class="tag-btn" data-tag="vui-vẻ">Vui vẻ</button>
-                                <button class="tag-btn" data-tag="bình-thường">Bình thường</button>
-                                <button class="tag-btn" data-tag="buồn">Buồn</button>
-                                <button class="tag-btn" data-tag="lo-lắng">Lo lắng</button>
-                                <button class="tag-btn" data-tag="căng-thẳng">Căng thẳng</button>
-                                <button class="tag-btn" data-tag="mệt-mỏi">Mệt mỏi</button>
-                                <button class="tag-btn" data-tag="tức-giận">Tức giận</button>
-                            </div>
-                        </div>
-                        <div class="tag-group">
-                            <h4>📚 Học tập</h4>
-                            <div class="tags">
-                                <button class="tag-btn" data-tag="học-bài">Học bài</button>
-                                <button class="tag-btn" data-tag="đi-làm">Đi làm</button>
-                                <button class="tag-btn" data-tag="làm-dự-án">Làm dự án</button>
-                                <button class="tag-btn" data-tag="đọc-sách">Đọc sách</button>
-                                <button class="tag-btn" data-tag="tự-học">Tự học</button>
-                            </div>
-                        </div>
-                        <div class="tag-group">
-                            <h4>🏃 Sức khỏe</h4>
-                            <div class="tags">
-                                <button class="tag-btn" data-tag="tập-thể-dục">Tập thể dục</button>
-                                <button class="tag-btn" data-tag="ăn-uống">Ăn uống</button>
-                                <button class="tag-btn" data-tag="uống-nước">Uống nước</button>
-                                <button class="tag-btn" data-tag="ngủ-ngon">Ngủ ngon</button>
-                                <button class="tag-btn" data-tag="ngủ-kém">Ngủ kém</button>
-                                <button class="tag-btn" data-tag="đi-bộ">Đi bộ</button>
-                            </div>
-                        </div>
-                        <div class="tag-group">
-                            <h4>🎮 Sở thích</h4>
-                            <div class="tags">
-                                <button class="tag-btn" data-tag="phim-ảnh">Phim ảnh</button>
-                                <button class="tag-btn" data-tag="chơi-game">Chơi game</button>
-                                <button class="tag-btn" data-tag="âm-nhạc">Âm nhạc</button>
-                                <button class="tag-btn" data-tag="viết-lách">Viết lách</button>
-                                <button class="tag-btn" data-tag="cà-phê">Cà phê</button>
-                            </div>
-                        </div>
-                        <div class="tag-group">
-                            <h4>🏠 Sinh hoạt</h4>
-                            <div class="tags">
-                                <button class="tag-btn" data-tag="dọn-dẹp">Dọn dẹp</button>
-                                <button class="tag-btn" data-tag="nấu-ăn">Nấu ăn</button>
-                                <button class="tag-btn" data-tag="mua-sắm">Mua sắm</button>
-                                <button class="tag-btn" data-tag="giặt-giũ">Giặt giũ</button>
-                                <button class="tag-btn" data-tag="ở-nhà">Ở nhà</button>
-                            </div>
-                        </div>
-                        <div class="tag-group">
-                            <h4>👥 Xã hội</h4>
-                            <div class="tags">
-                                <button class="tag-btn" data-tag="gia-đình">Gia đình</button>
-                                <button class="tag-btn" data-tag="bạn-bè">Bạn bè</button>
-                                <button class="tag-btn" data-tag="hẹn-hò">Hẹn hò</button>
-                                <button class="tag-btn" data-tag="tiệc-tùng">Tiệc tùng</button>
-                                <button class="tag-btn" data-tag="gọi-điện">Gọi điện</button>
-                            </div>
-                        </div>
-                        <div class="tag-group">
-                            <h4>🌤 Thời tiết</h4>
-                            <div class="tags">
-                                <button class="tag-btn" data-tag="nắng">Nắng</button>
-                                <button class="tag-btn" data-tag="mưa">Mưa</button>
-                                <button class="tag-btn" data-tag="mây">Mây</button>
-                                <button class="tag-btn" data-tag="nóng">Nóng</button>
-                                <button class="tag-btn" data-tag="gió">Gió</button>
-                            </div>
-                        </div>
-                        <div class="tag-group">
-                            <h4>💰 Tài chính</h4>
-                            <div class="tags">
-                                <button class="tag-btn" data-tag="tiết-kiệm">Tiết kiệm</button>
-                                <button class="tag-btn" data-tag="mua-sắm-lớn">Mua sắm lớn</button>
-                                <button class="tag-btn" data-tag="ăn-ngoài">Ăn ngoài</button>
-                                <button class="tag-btn" data-tag="thu-nhập">Thu nhập</button>
-                            </div>
-                        </div>
-                        <div class="tag-group">
-                            <h4>✈️ Đặc biệt</h4>
-                            <div class="tags">
-                                <button class="tag-btn" data-tag="du-lịch">Du lịch</button>
-                                <button class="tag-btn" data-tag="chụp-ảnh">Chụp ảnh</button>
-                                <button class="tag-btn" data-tag="khám-phá">Khám phá</button>
-                                <button class="tag-btn" data-tag="sáng-tạo">Sáng tạo</button>
-                                <button class="tag-btn" data-tag="lễ-hội">Lễ hội</button>
-                            </div>
-                        </div>
+                    <input type="text" id="tag-search" placeholder="🔍 Tìm tag..." class="search-input" style="margin-bottom: 10px;">
+                    <div id="tag-groups" class="tag-groups">
+                        <!-- Tags will be dynamically rendered -->
                     </div>
+                    <button class="btn btn-secondary" onclick="toggleAllTags()" style="margin-top: 10px;">Xem thêm</button>
                 </div>
             </div>
 
