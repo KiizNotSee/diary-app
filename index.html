@@ -59,6 +59,12 @@
             <button class="tab-btn" data-tab="trash" onclick="switchTab('trash')">🗑️ Thùng rác</button>
         </nav>
 
+        <!-- Daily Quote and Question Section -->
+        <section class="daily-motivation card">
+            <h3 id="daily-question">🤔 Hôm nay bạn thế nào?</h3>
+            <p id="daily-quote" class="quote">"Mỗi ngày là một cơ hội mới để viết nên câu chuyện của riêng bạn."</p>
+        </section>
+
         <!-- Editor Tab -->
         <div id="editor-tab" class="tab-content active">
             <div class="editor-section card">
@@ -86,7 +92,18 @@
                 </div>
 
                 <!-- Editor -->
+                <div class="template-selector" style="margin-bottom: 12px;">
+                    <select id="template-select" onchange="insertTemplate()" class="search-input" style="padding: 10px; font-size: 0.9rem;">
+                        <option value="">Chọn mẫu nhật ký...</option>
+                        <option value="daily">📝 Mẫu 1: Daily Reflection</option>
+                        <option value="deep">🌱 Mẫu 2: Deep Journal</option>
+                    </select>
+                </div>
                 <div id="editor-container"></div>
+                <div class="media-section" style="margin-top: 12px; display: flex; gap: 10px;">
+                    <input type="file" id="image-upload" accept="image/*" class="btn btn-secondary">
+                    <input type="text" id="song-url" placeholder="Link bài hát (YouTube/Spotify)..." class="search-input">
+                </div>
 
                 <!-- Word Count -->
                 <div class="word-count">

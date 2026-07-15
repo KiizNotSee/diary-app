@@ -179,40 +179,45 @@ document.addEventListener('DOMContentLoaded', () => {
         const content = editor.getData();
         const mood = document.querySelector('.mood-btn.active')?.dataset.mood;
         const tags = Array.from(document.querySelectorAll('.tag-btn.active')).map(t => t.dataset.tag);
+        const songUrl = document.getElementById('song-url')?.value?.trim() || '';
         const date = new Date().toISOString();
 
-        if (!title && !content) {
-            showToast('Vui lòng nhập tiêu đề hoặc nội dung.', 'error');
+        // Handle image upload
+        const imageInput = document.getElementById('image-upload');
+        const saveWithImage = (imageUrl) => {
+            if (!title && !content) {
+                showToast('Vui lòng nhập tiêu đề hoặc nội dung.', 'error');
+                return;
+            }
+
+            const entryData = { title, content, mood, tags, songUrl, imageUrl: imageUrl || '', modifiedAt: date };
+
+            if (currentEntryId) {
+                const index = state.entries.findIndex(e => e.id === currentEntryId);
+                if (index > -1) {
+                    state.entries[index] = { ...state.entries[index], ...entryData };
+                    showToast('Cập nhật thành công!');
+                }
+            } else {
+                const newEntry = { id: `entry-${Date.now()}`, ...entryData, createdAt: date };
+                state.entries.unshift(newEntry);
+                showToast('Lưu nhật ký thành công!');
+            }
+            
+            saveToStorage('diaryEntries', state.entries);
+            clearDraft();
+            resetEditor();
+            updateStreak();
+            switchTab('entries');
+        };
+
+        if (imageInput && imageInput.files.length > 0) {
+            const reader = new FileReader();
+            reader.onload = (e) => saveWithImage(e.target.result);
+            reader.readAsDataURL(imageInput.files[0]);
             return;
         }
-
-        if (currentEntryId) {
-            // Update existing entry
-            const index = state.entries.findIndex(e => e.id === currentEntryId);
-            if (index > -1) {
-                state.entries[index] = { ...state.entries[index], title, content, mood, tags, modifiedAt: date };
-                showToast('Cập nhật thành công!');
-            }
-        } else {
-            // Create new entry
-            const newEntry = {
-                id: `entry-${Date.now()}`,
-                title,
-                content,
-                mood,
-                tags,
-                createdAt: date,
-                modifiedAt: date,
-            };
-            state.entries.unshift(newEntry);
-            showToast('Lưu nhật ký thành công!');
-        }
-        
-        saveToStorage('diaryEntries', state.entries);
-        clearDraft();
-        resetEditor();
-        updateStreak();
-        switchTab('entries');
+        saveWithImage('');
     };
     
     window.editEntry = (id) => {
@@ -329,12 +334,14 @@ document.addEventListener('DOMContentLoaded', () => {
             entryCard.innerHTML = `
                 <div class="screw screw-tl"></div><div class="screw screw-tr"></div>
                 <div class="screw screw-bl"></div><div class="screw screw-br"></div>
+                ${entry.imageUrl ? `<div class="entry-image"><img src="${entry.imageUrl}" alt="ảnh nhật ký"></div>` : ''}
                 <div class="entry-meta">
                     <span class="entry-date">${formattedDate}</span>
                     <span class="entry-mood">${moodEmoji}</span>
                 </div>
                 <h3 class="entry-title-display">${entry.title || 'Không có tiêu đề'}</h3>
                 <p class="entry-preview">${entry.content.replace(/<[^>]+>/g, '').substring(0, 150)}...</p>
+                ${entry.songUrl ? `<div class="entry-song">🎵 <a href="${entry.songUrl}" target="_blank">Bài hát hôm nay</a></div>` : ''}
                 <div class="entry-tags">
                     ${entry.tags.map(tag => `<span class="entry-tag">${tag}</span>`).join('')}
                 </div>
@@ -733,6 +740,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
+    // ======== New Features Logic ========
+    const quotes = [
+        "Mỗi ngày là một cơ hội mới để viết nên câu chuyện của riêng bạn.",
+        "Hạnh phúc không phải là đích đến, mà là hành trình chúng ta đang đi.",
+        "Hãy tin rằng bạn có thể và bạn đã đi được nửa chặng đường.",
+        "Đừng để ngày hôm qua chiếm dụng quá nhiều ngày hôm nay.",
+        "Sự kiên trì là chìa khóa của mọi thành công."
+    ];
+
+    const questions = [
+        "🤔 Hôm nay bạn thế nào?",
+        "🌟 Điều gì làm bạn mỉm cười hôm nay?",
+        "💪 Bạn đã vượt qua thử thách nào hôm nay?",
+        "🌱 Bạn đã học được điều gì mới chưa?",
+        "💭 Bạn đang cảm thấy biết ơn điều gì nhất?"
+    ];
+
+    const updateMotivation = () => {
+        document.getElementById('daily-quote').textContent = `"${quotes[Math.floor(Math.random() * quotes.length)]}"`;
+        document.getElementById('daily-question').textContent = questions[Math.floor(Math.random() * questions.length)];
+    };
+
+    window.insertTemplate = () => {
+        const template = document.getElementById('template-select').value;
+        let content = '';
+        if (template === 'daily') {
+            content = `
+                <h2>📅 Daily Reflection</h2>
+                <p><strong>Ngày:</strong> ${new Date().toLocaleDateString()}</p>
+                <h3>✨ Hôm nay có gì đáng nhớ?</h3><p></p>
+                <h3>🎯 Điều mình đã làm tốt</h3><ul><li></li></ul>
+                <h3>😕 Điều chưa hài lòng</h3><ul><li></li></ul>
+                <h3>💡 Bài học hôm nay</h3><p></p>
+                <h3>🙏 Điều mình biết ơn</h3><p></p>
+                <h3>🌙 Mục tiêu cho ngày mai</h3><p></p>
+            `;
+        } else if (template === 'deep') {
+            content = `
+                <h2>🌱 Deep Journal</h2>
+                <h3>💭 Mình đang nghĩ gì?</h3><p></p>
+                <h3>❤️ Cảm xúc lớn nhất hôm nay?</h3><p></p>
+                <h3>⚡ Điều gì khiến mình vui/buồn nhất?</h3><p></p>
+                <h3>🧠 Nếu quay lại hôm nay, mình sẽ thay đổi gì?</h3><p></p>
+                <h3>🚀 Phiên bản ngày mai của mình cần nhớ gì?</h3><p></p>
+            `;
+        }
+        if (content) editor.setData(content);
+    };
+
     // ======== Initialization ========
     const initialize = () => {
         handleOnboarding();
@@ -741,6 +797,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderImportantDates();
         loadNotificationSettings();
         scheduleNotifications();
+        updateMotivation();
         switchTab('editor'); // Start on editor tab
     };
 
