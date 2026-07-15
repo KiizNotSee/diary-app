@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentEntryId = null;
     let undoTimeout;
     let allTagsExpanded = false;
+    let isEditorReady = false;
 
     // ======== Tag System ========
     const tagData = {
@@ -164,29 +165,40 @@ document.addEventListener('DOMContentLoaded', () => {
         if (btn) btn.textContent = allTagsExpanded ? 'Thu gọn' : 'Xem thêm';
     };
 
+    // ======== Tag Rendering (Must be independent of CKEditor) ========
+    renderTags();
+
     // ======== CKEditor 5 Initialization ========
-    ClassicEditor
-        .create(document.querySelector('#editor-container'), {
-            toolbar: [
-                'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', '|',
-                'bulletedList', 'numberedList', '|', 'blockQuote', 'link', 'horizontalLine', '|',
-                'undo', 'redo', '|', 'removeFormat'
-            ],
-            language: 'vi'
-        })
-        .then(newEditor => {
-            editor = newEditor;
-            editor.model.document.on('change:data', () => {
-                updateWordCount();
-                saveDraft();
-            });
-            renderTags();
-            loadDraft();
-        })
-        .catch(error => {
-            console.error('CKEditor initialization error:', error);
-            showToast('Lỗi tải trình soạn thảo!', 'error');
-        });
+    setTimeout(() => {
+        if (typeof ClassicEditor !== 'undefined') {
+            ClassicEditor
+                .create(document.querySelector('#editor-container'), {
+                    toolbar: [
+                        'heading', '|', 'bold', 'italic', 'underline', 'strikethrough', '|',
+                        'bulletedList', 'numberedList', '|', 'blockQuote', 'link', 'horizontalLine', '|',
+                        'undo', 'redo', '|', 'removeFormat'
+                    ],
+                    language: 'vi'
+                })
+                .then(newEditor => {
+                    editor = newEditor;
+                    isEditorReady = true;
+                    editor.model.document.on('change:data', () => {
+                        updateWordCount();
+                        saveDraft();
+                    });
+                    loadDraft();
+                })
+                .catch(error => {
+                    console.error('CKEditor initialization error:', error);
+                    showToast('Lỗi tải trình soạn thảo văn bản! Bạn vẫn có thể gắn thẻ và lưu nhật ký.', 'error');
+                    isEditorReady = false;
+                });
+        } else {
+            console.warn('CKEditor not loaded');
+            showToast('Trình soạn thảo chưa sẵn sàng. Vui lòng tải lại trang.', 'error');
+        }
+    }, 500);
 
     // ======== Event Listeners ========
     tabs.forEach(tab => tab.addEventListener('click', () => switchTab(tab.dataset.tab)));
