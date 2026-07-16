@@ -811,6 +811,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.insertTemplate = () => {
         const t = document.getElementById('template-select').value;
+        // Xóa toàn bộ văn bản hiện tại trước khi chèn mẫu mới
         let c = '';
         if (t === 'daily') c = `
             <h2>📅 Daily Reflection</h2>
@@ -830,7 +831,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <h3>🧠 Nếu quay lại, mình sẽ thay đổi gì?</h3><p></p>
             <h3>🚀 Phiên bản ngày mai cần nhớ gì?</h3><p></p>
         `;
-        if (c) editor.setData(c);
+        // Nếu chọn "Chọn mẫu nhật ký..." (giá trị rỗng) thì xóa sạch editor
+        editor.setData(c);
     };
 
     // ======== Initialization ========
