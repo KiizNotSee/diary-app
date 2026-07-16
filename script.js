@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let undoTimeout;
     let allTagsExpanded = false;
     let isEditorReady = false;
+    let expandedGroups = {}; // Track expanded state per group
 
     // ======== Tag System ========
     const tagData = {
@@ -105,9 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
         tagGroupsContainer.innerHTML = '';
         const MAX_VISIBLE = 5;
         
-        Object.entries(tagData).forEach(([groupName, groupData]) => {
+        Object.entries(tagData).forEach(([groupName, groupData], idx) => {
             const groupEl = document.createElement('div');
             groupEl.className = 'tag-group';
+            groupEl.dataset.groupIdx = idx;
             
             const filteredTags = filter 
                 ? groupData.tags.filter(tag => tag.toLowerCase().includes(filter.toLowerCase()))
@@ -115,14 +117,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (filteredTags.length === 0 && filter) return;
 
-            const visibleTags = allTagsExpanded ? filteredTags : filteredTags.slice(0, MAX_VISIBLE);
-            const hasMore = filteredTags.length > MAX_VISIBLE && !allTagsExpanded;
+            // Check if this specific group is expanded
+            const isExpanded = expandedGroups[idx] || false;
+            const visibleTags = isExpanded ? filteredTags : filteredTags.slice(0, MAX_VISIBLE);
+            const hasMore = filteredTags.length > MAX_VISIBLE && !isExpanded;
 
             groupEl.innerHTML = `
                 <h4>${groupName}</h4>
                 <div class="tags">
                     ${visibleTags.map(tag => `<button class="tag-btn" data-tag="${tag.toLowerCase().replace(/\s+/g, '-')}">${tag}</button>`).join('')}
-                    ${hasMore ? `<button class="tag-btn tag-btn-more" onclick="toggleAllTags()" style="font-size:0.8rem; opacity:0.7;">+${filteredTags.length - MAX_VISIBLE}...</button>` : ''}
+                    ${hasMore ? `<button class="tag-btn tag-btn-more" onclick="toggleGroupTags(${idx})">+${filteredTags.length - MAX_VISIBLE}...</button>` : ''}
                 </div>
             `;
             tagGroupsContainer.appendChild(groupEl);
@@ -161,7 +165,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Lưu trạng thái active hiện tại trước khi render lại
         const activeTags = getActiveTags();
         
-        allTagsExpanded = !allTagsExpanded;
+        // Toggle ALL groups at once
+        const newState = !allTagsExpanded;
+        allTagsExpanded = newState;
+        Object.keys(tagData).forEach((_, idx) => { expandedGroups[idx] = newState; });
+        
         const filterVal = tagSearchInput ? tagSearchInput.value : '';
         renderTags(filterVal);
         
@@ -173,6 +181,23 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const btn = document.querySelector('.tags-section > .btn-secondary');
         if (btn) btn.textContent = allTagsExpanded ? 'Thu gọn' : 'Xem thêm';
+    };
+    
+    window.toggleGroupTags = (idx) => {
+        // Lưu trạng thái active hiện tại trước khi render lại
+        const activeTags = getActiveTags();
+        
+        // Toggle only the specific group
+        expandedGroups[idx] = !expandedGroups[idx];
+        
+        const filterVal = tagSearchInput ? tagSearchInput.value : '';
+        renderTags(filterVal);
+        
+        // Khôi phục trạng thái active
+        activeTags.forEach(tag => {
+            const btn = document.querySelector(`.tag-btn[data-tag="${tag}"]`);
+            if (btn) btn.classList.add('active');
+        });
     };
 
     // ======== Tag Rendering (Must be independent of CKEditor) ========
