@@ -278,22 +278,20 @@ h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; font-weight: 800; color: var
 }
 @media (max-width: 768px) {
     .container { padding: 0 16px; }
-    .header-content { flex-wrap: wrap; gap: 12px; justify-content: center; }
-    .logo h1 { font-size: 1.8rem; }
-    .editor-header { flex-direction: column; align-items: stretch; gap: 16px; }
-    .entry-title { min-width: unset; width: 100%; }
-    .editor-actions { width: 100%; justify-content: space-around; }
-    .editor-actions .btn { flex: 1; }
-    .mood-selector { flex-direction: column; align-items: flex-start; }
-    .mood-btn { width: 48px; height: 48px; font-size: 1.6rem; }
-    .tag-group { padding: 12px; flex: 1 1 150px; }
-    .tag-btn { padding: 6px 12px; font-size: 0.8rem; }
-    .date-input-group { flex-direction: column; }
-    .date-input-group input, .date-input-group select { width: 100%; }
-    .entry-card { padding: 20px; }
+    .header-content { flex-direction: column; gap: 12px; }
+    .logo h1 { font-size: 1.5rem; }
+    .tabs { padding: 4px; gap: 4px; }
+    .tab-btn { padding: 10px 12px; font-size: 0.85rem; }
+    .editor-header { flex-direction: column; align-items: stretch; gap: 12px; }
+    .entry-title { width: 100%; font-size: 1.1rem; padding: 12px 16px; }
+    .editor-actions { flex-direction: column; gap: 8px; }
+    .mood-selector { flex-direction: column; align-items: center; gap: 8px; }
+    .mood-options { gap: 6px; }
+    .mood-btn { width: 40px; height: 40px; font-size: 1.2rem; }
+    .tag-group { flex: 1 1 100%; }
+    .date-input-group { flex-direction: column; gap: 8px; }
+    .entry-card { padding: 16px; }
     .stats-section { grid-template-columns: 1fr; }
-    .tabs { padding: 6px; border-radius: 20px; }
-    .tab-btn { padding: 10px 20px; font-size: 0.9rem; }
 }
 @media (max-width: 480px) {
     .container { padding: 0 12px; }

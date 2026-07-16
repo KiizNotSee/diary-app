@@ -158,9 +158,19 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.toggleAllTags = () => {
+        // Lưu trạng thái active hiện tại trước khi render lại
+        const activeTags = getActiveTags();
+        
         allTagsExpanded = !allTagsExpanded;
         const filterVal = tagSearchInput ? tagSearchInput.value : '';
         renderTags(filterVal);
+        
+        // Khôi phục trạng thái active
+        activeTags.forEach(tag => {
+            const btn = document.querySelector(`.tag-btn[data-tag="${tag}"]`);
+            if (btn) btn.classList.add('active');
+        });
+        
         const btn = document.querySelector('.tags-section > .btn-secondary');
         if (btn) btn.textContent = allTagsExpanded ? 'Thu gọn' : 'Xem thêm';
     };
